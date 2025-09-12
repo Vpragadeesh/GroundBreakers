@@ -4,7 +4,9 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
+import { ChatbotWidget } from "@/components/chatbot-widget"
 import "./globals.css"
+import "@/styles/chatbot.css"
 
 export const metadata: Metadata = {
   title: "Groundwater Conservation & Rainwater Harvesting Assessment",
@@ -22,6 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <Suspense fallback={null}>{children}</Suspense>
+        <ChatbotWidget />
         <Analytics />
       </body>
     </html>

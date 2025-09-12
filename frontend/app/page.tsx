@@ -29,9 +29,6 @@ export default function HomePage() {
               <Link href="/about" className="text-foreground hover:text-primary transition-colors">
                 About
               </Link>
-              <Link href="/GIS" className="text-foreground hover:text-primary transition-colors">
-                GIS 
-              </Link>
             </nav>
           </div>
         </div>

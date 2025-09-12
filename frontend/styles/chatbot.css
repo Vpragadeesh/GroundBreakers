@@ -1,0 +1,65 @@
+/* Chatbot widget specific styles */
+.chatbot-message {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  overflow: hidden;
+}
+
+.chatbot-message * {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.chatbot-scroll-area {
+  height: 100%;
+  overflow: hidden;
+}
+
+.chatbot-scroll-area [data-radix-scroll-area-viewport] {
+  height: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(203 213 225) transparent;
+}
+
+.chatbot-scroll-area [data-radix-scroll-area-viewport]::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatbot-scroll-area [data-radix-scroll-area-viewport]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chatbot-scroll-area [data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb {
+  background: rgb(203 213 225);
+  border-radius: 3px;
+}
+
+.chatbot-scroll-area [data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb:hover {
+  background: rgb(148 163 184);
+}
+
+/* Force text wrapping for long words */
+.word-wrap-break-word {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Additional overflow protection */
+.chatbot-message pre,
+.chatbot-message code {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  max-width: 100% !important;
+}
+
+/* Ensure no horizontal overflow */
+.chatbot-scroll-area * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
