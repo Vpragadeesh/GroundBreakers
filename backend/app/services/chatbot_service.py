@@ -11,6 +11,8 @@ from ..models.chatbot import (
     ChatbotConfig
 )
 from ..utils.chatbot_utils import ChatbotUtils
+from .rag_service import OptimizedRAGService
+from ..models.rag import RAGQuery
 from dotenv import load_dotenv
 
 
@@ -23,6 +25,13 @@ class ChatbotService:
         
         self.client = Groq(api_key=self.groq_api_key)
         self.config = ChatbotConfig()
+        
+        # Initialize RAG service
+        try:
+            self.rag_service = OptimizedRAGService()
+        except Exception as e:
+            print(f"Warning: RAG service initialization failed: {e}")
+            self.rag_service = None
         
         # In-memory storage for conversations (replace with database in production)
         self.conversations: Dict[str, ConversationHistory] = {}
@@ -44,9 +53,15 @@ class ChatbotService:
         self.conversations[new_id] = conversation
         return conversation
     
-    def _prepare_messages_for_groq(self, conversation: ConversationHistory, new_message: str) -> List[dict]:
-        """Prepare messages in the format expected by Groq API"""
-        messages = [{"role": "system", "content": self.config.system_prompt}]
+    def _prepare_messages_for_groq(self, conversation: ConversationHistory, new_message: str, rag_context: str = "") -> List[dict]:
+        """Prepare messages in the format expected by Groq API with RAG context"""
+        enhanced_system_prompt = self.config.system_prompt
+        
+        # Add RAG context to system prompt if available
+        if rag_context:
+            enhanced_system_prompt += f"\n\nRelevant Knowledge Base Information:\n{rag_context}\n\nUse this information to provide accurate, detailed responses about rainwater harvesting. If the user's question relates to the provided information, reference it in your response."
+        
+        messages = [{"role": "system", "content": enhanced_system_prompt}]
         
         # Add conversation history
         for msg in conversation.messages[-10:]:  # Keep last 10 messages for context
@@ -73,7 +88,7 @@ class ChatbotService:
         return "; ".join(enhancements) if enhancements else ""
 
     async def get_response(self, request: ChatRequest) -> ChatResponse:
-        """Generate a response using Groq API"""
+        """Generate a response using Groq API with RAG enhancement"""
         try:
             # Sanitize user input
             sanitized_message = ChatbotUtils.sanitize_message(request.message)
@@ -84,14 +99,29 @@ class ChatbotService:
             # Get or create conversation
             conversation = self._get_conversation(request.conversation_id, request.user_id)
             
+            # Retrieve relevant context using RAG
+            rag_context = ""
+            if self.rag_service and len(sanitized_message.strip()) > 10:  # Only for substantial queries
+                try:
+                    rag_query = RAGQuery(
+                        query=sanitized_message,
+                        top_k=3,
+                        min_score=0.3
+                    )
+                    rag_results = await self._get_rag_context(rag_query)
+                    if rag_results.results:
+                        rag_context = self._format_rag_context(rag_results.results)
+                except Exception as e:
+                    print(f"RAG retrieval error: {e}")
+            
             # Prepare messages for Groq
-            messages = self._prepare_messages_for_groq(conversation, sanitized_message)
+            messages = self._prepare_messages_for_groq(conversation, sanitized_message, rag_context)
             
             # Add context-aware system enhancement
             if any(rwh_context[key] for key in ["mentions_roof", "mentions_area", "mentions_rainfall"]):
                 context_enhancement = self._enhance_system_prompt_with_context(rwh_context)
                 if context_enhancement:
-                    messages[0]["content"] += f"\n\nCurrent context: {context_enhancement}"
+                    messages[0]["content"] += f"\n\nUser Context: {context_enhancement}"
             
             # Call Groq API
             chat_completion = self.client.chat.completions.create(
@@ -151,6 +181,23 @@ class ChatbotService:
                 usage=None
             )
     
+    async def _get_rag_context(self, rag_query: RAGQuery):
+        """Retrieve relevant context from RAG service"""
+        return await self.rag_service.search(rag_query)
+    
+    def _format_rag_context(self, rag_results: List) -> str:
+        """Format RAG search results into context string"""
+        if not rag_results:
+            return ""
+        
+        context_parts = []
+        for i, result in enumerate(rag_results[:3], 1):  # Limit to top 3 results
+            context_parts.append(
+                f"**Reference {i}** (Relevance: {result.score:.2f}):\n{result.chunk.content}\n"
+            )
+        
+        return "\n".join(context_parts)
+
     def get_conversation_history(self, conversation_id: str) -> Optional[ConversationHistory]:
         """Get conversation history by ID"""
         return self.conversations.get(conversation_id)

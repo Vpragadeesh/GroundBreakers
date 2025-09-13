@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .middleware.chatbot_middleware import ChatbotMiddleware
 
-from .routers import health, auth, assessments, chatbot
+from .routers import health, auth, assessments, chatbot, rag
 
 app = FastAPI(
     title="RWH Assessment API", 
@@ -29,3 +29,4 @@ app.include_router(health.router)
 app.include_router(auth.router, prefix="/api/auth")
 app.include_router(assessments.router, prefix="/api/assessments")
 app.include_router(chatbot.router, prefix="/api/chatbot")
+app.include_router(rag.router, prefix="/api/rag")
