@@ -1,7 +1,9 @@
+"use client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Droplets, Calculator, MapPin, TrendingUp, Users, Leaf } from "lucide-react"
 import Link from "next/link"
+import Translator from "@/components/translator/translator"
 
 export default function HomePage() {
   return (
@@ -9,7 +11,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
                 <Droplets className="h-6 w-6 text-primary-foreground" />
@@ -19,6 +21,7 @@ export default function HomePage() {
                 <p className="text-sm text-muted-foreground">Groundwater Conservation Platform</p>
               </div>
             </div>
+            
             <nav className="hidden md:flex items-center gap-6">
               <Link href="/assessment" className="text-foreground hover:text-primary transition-colors">
                 Assessment Tool
@@ -30,6 +33,10 @@ export default function HomePage() {
                 About
               </Link>
             </nav>
+            
+            <div className="flex items-center">
+              <Translator />
+            </div>
           </div>
         </div>
       </header>
