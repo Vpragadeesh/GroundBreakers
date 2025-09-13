@@ -25,7 +25,7 @@ export default function HomePage() {
             </div>
             
             <nav className="hidden md:flex items-center gap-6">
-              <Link href="/GIS" className="text-foreground hover:text-primary transition-colors">
+              <Link href="https://navin-lakshman-s.github.io/GIS-SIH/" className="text-foreground hover:text-primary transition-colors">
                 GIS
               </Link>
               <Link href="/assessment" className="text-foreground hover:text-primary transition-colors">
