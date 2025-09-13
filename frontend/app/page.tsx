@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Droplets, Calculator, MapPin, TrendingUp, Users, Leaf } from "lucide-react"
 import Link from "next/link"
 import Translator from "@/components/translator/translator"
+import { LocationDisplay } from "@/components/location-display"
 
 export default function HomePage() {
   return (
@@ -41,8 +42,14 @@ export default function HomePage() {
         </div>
       </header>
 
+      {/* Location Display */}
+      <section className="py-4 px-4">
+        <LocationDisplay />
+      </section>
+     
+
       {/* Hero Section */}
-      <section className="py-16 px-4">
+      <section className="py-12 px-4">
         <div className="container mx-auto text-center">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6 text-balance">
