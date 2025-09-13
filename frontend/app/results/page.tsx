@@ -52,11 +52,6 @@ interface AssessmentResults {
     depth: string
     quality: string
   }
-  costEstimate: {
-    initial: number
-    annual: number
-    paybackPeriod: number
-  }
   waterSavings: {
     annual: number
     monthly: number
@@ -160,11 +155,6 @@ export default function ResultsPage() {
         type: "Alluvial Aquifer",
         depth: "15-25 meters",
         quality: "Good to Moderate",
-      },
-      costEstimate: {
-        initial: initialCost,
-        annual: annualSavings,
-        paybackPeriod,
       },
       waterSavings: {
         annual: runoffCapacity,
@@ -294,7 +284,7 @@ export default function ResultsPage() {
             <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="technical">Technical</TabsTrigger>
-              <TabsTrigger value="financial">Financial</TabsTrigger>
+
               <TabsTrigger value="environmental">Environmental</TabsTrigger>
               <TabsTrigger value="implementation">Implementation</TabsTrigger>
             </TabsList>
@@ -454,100 +444,6 @@ export default function ResultsPage() {
               </div>
             </TabsContent>
 
-            {/* Financial Tab */}
-            <TabsContent value="financial" className="space-y-6">
-              <div className="grid md:grid-cols-3 gap-6">
-                <Card className="border-border">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <IndianRupee className="h-5 w-5 text-primary" />
-                      Initial Investment
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold text-primary mb-2">
-                      ₹{results.costEstimate.initial.toLocaleString()}
-                    </div>
-                    <p className="text-sm text-muted-foreground">Includes materials, installation, and setup costs</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-border">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <TrendingUp className="h-5 w-5 text-primary" />
-                      Annual Savings
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold text-green-600 mb-2">
-                      ₹{results.costEstimate.annual.toLocaleString()}
-                    </div>
-                    <p className="text-sm text-muted-foreground">Estimated yearly water bill reduction</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-border">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Calculator className="h-5 w-5 text-primary" />
-                      Payback Period
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold text-primary mb-2">
-                      {results.costEstimate.paybackPeriod} years
-                    </div>
-                    <p className="text-sm text-muted-foreground">Time to recover initial investment</p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Card className="border-border">
-                <CardHeader>
-                  <CardTitle>Cost Breakdown</CardTitle>
-                  <CardDescription>Detailed breakdown of implementation costs</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span>Rooftop Collection System</span>
-                      <span className="font-medium">
-                        ₹{Math.round(results.costEstimate.initial * 0.3).toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>Storage Tank</span>
-                      <span className="font-medium">
-                        ₹{Math.round(results.costEstimate.initial * 0.25).toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>Recharge Structures</span>
-                      <span className="font-medium">
-                        ₹{Math.round(results.costEstimate.initial * 0.2).toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>Filtration System</span>
-                      <span className="font-medium">
-                        ₹{Math.round(results.costEstimate.initial * 0.15).toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>Installation & Labor</span>
-                      <span className="font-medium">
-                        ₹{Math.round(results.costEstimate.initial * 0.1).toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="border-t pt-2 flex justify-between items-center font-bold">
-                      <span>Total</span>
-                      <span>₹{results.costEstimate.initial.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
 
             {/* Environmental Tab */}
             <TabsContent value="environmental" className="space-y-6">
