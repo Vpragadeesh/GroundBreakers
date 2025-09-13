@@ -3,6 +3,7 @@ import { MapPin, RefreshCw, AlertCircle, Loader2, Navigation, Satellite, Map, Mo
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useLocation } from "@/hooks/use-location"
+import { WeatherCard } from "@/components/weather-card"
 import { useState } from "react"
 
 interface EmbeddedMapProps {
@@ -261,7 +262,6 @@ export function LocationDisplay() {
               </div>
               
               <div>
-                <h4 className="text-sm font-medium text-foreground mb-2">Interactive Map with Multiple Views</h4>
                 <EmbeddedMap 
                   latitude={latitude!} 
                   longitude={longitude!} 
@@ -272,6 +272,16 @@ export function LocationDisplay() {
           </CardContent>
         )}
       </Card>
+
+      <div className="mt-4">
+      <WeatherCard 
+        latitude={latitude} 
+        longitude={longitude} 
+        city={city} 
+        country={country} 
+      />
+      </div>
+      
     </div>
   )
 }

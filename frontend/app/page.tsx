@@ -5,6 +5,7 @@ import { Droplets, Calculator, MapPin, TrendingUp, Users, Leaf } from "lucide-re
 import Link from "next/link"
 import Translator from "@/components/translator/translator"
 import { LocationDisplay } from "@/components/location-display"
+import { WeatherCard } from "@/components/weather-card"
 
 export default function HomePage() {
   return (
