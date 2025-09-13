@@ -24,6 +24,9 @@ export default function HomePage() {
             </div>
             
             <nav className="hidden md:flex items-center gap-6">
+              <Link href="/GIS" className="text-foreground hover:text-primary transition-colors">
+                GIS
+              </Link>
               <Link href="/assessment" className="text-foreground hover:text-primary transition-colors">
                 Assessment Tool
               </Link>
