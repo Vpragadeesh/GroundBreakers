@@ -55,5 +55,6 @@ dist/
 
 # Project-level ignores
 /backend/app/__pycache__/
-data
 
+*.md
+*.sh
